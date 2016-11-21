@@ -157,4 +157,33 @@ class DistributedMutexHelperSpec extends IntegrationSpec {
         then:
         distributedMutex.locked
     }
+
+    def 'When a mutex is locked, forcibly releasing it allows it to be reacquired'() {
+        setup:
+        distributedMutexHelper.acquireMutexLock(MUTEX_IDENTIFIER_NAME)
+
+        expect:
+        distributedMutexHelper.isMutexLocked(MUTEX_IDENTIFIER_NAME)
+
+        when:
+        distributedMutexHelper.acquireMutexLock(MUTEX_IDENTIFIER_NAME, DistributedMutexHelper.DEFAULT_MUTEX_TIMEOUT, 100)
+
+        then:
+        thrown LockNotAcquiredException
+
+        when:
+        distributedMutexHelper.forciblyReleaseMutex(MUTEX_IDENTIFIER_NAME)
+        distributedMutexHelper.acquireMutexLock(MUTEX_IDENTIFIER_NAME)
+
+        then:
+        notThrown LockNotAcquiredException
+    }
+
+    def 'If a mutex has never been used, then a lock check should be negative'() {
+        when:
+        boolean isLocked = distributedMutexHelper.isMutexLocked(MUTEX_IDENTIFIER_NAME)
+
+        then: 'No exceptions are thrown, and the mutex is not locked'
+        !isLocked
+    }
 }
