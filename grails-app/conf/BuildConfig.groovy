@@ -15,32 +15,41 @@
  */
 grails.project.work.dir = "target"
 
+grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
     inherits "global"
     log "warn"
+    checksums true
+    legacyResolve false
+
     repositories {
+        grailsPlugins()
+        grailsHome()
         mavenLocal()
         grailsCentral()
         mavenCentral()
-        mavenRepo "https://repo.grails.org/grails/plugins"
     }
 
     dependencies {
         test('org.objenesis:objenesis:2.1') {
             export = false
         }
+
+        compile( "org.springframework:spring-orm:$springVersion" ) {
+            export = false
+        }
     }
 
     plugins {
-        build(":release:2.2.1", ":rest-client-builder:1.0.3") {
+        build(":release:3.1.1", ":rest-client-builder:1.0.3") {
             export = false
         }
 
-        runtime ":hibernate:$grailsVersion", {
+        runtime ":hibernate4:4.3.5.3", {
             export = false
         }
 
-        test(":spock:0.7", ":code-coverage:1.2.7") {
+        test(":code-coverage:1.2.7") {
             export = false
         }
     }

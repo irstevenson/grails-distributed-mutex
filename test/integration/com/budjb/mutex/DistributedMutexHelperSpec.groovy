@@ -16,7 +16,7 @@
 package com.budjb.mutex
 
 import com.budjb.mutex.exception.LockNotAcquiredException
-import grails.plugin.spock.IntegrationSpec
+import grails.test.spock.IntegrationSpec
 import org.slf4j.Logger
 
 class DistributedMutexHelperSpec extends IntegrationSpec {
