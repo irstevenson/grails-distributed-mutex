@@ -1,3 +1,7 @@
+h3. Version 2.0.1
+
+* Corrected transaction handling for when acquiring a mutex within another transaction - .e.g. from a Service method.
+
 h3. Version 2.0.0
 
 * Updated to support grails 2.4.x
